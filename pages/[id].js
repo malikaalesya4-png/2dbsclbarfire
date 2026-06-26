@@ -13,10 +13,17 @@ export default function Player() {
   const hasTriggeredVerif = useRef(false); // Mengunci agar verifikasi cuma muncul sekali
   const lastCheckedTime = useRef(-1); // 🎯 PELINDUNG BIAR TIDAK RAKUS REQUEST CLOUDFLARE
 
-  // 🛠️ LOGIKA PEMBERSIH EKOR .MP4 (Anti Case-Sensitive & Spasi)
+  // 🛠️ LOGIKA BARU: PEMBERSIH EKOR .MP4 & KUPAS TOPENG 3 HURUF PENDEK GESS
   let id = rawId;
   if (id && typeof id === 'string') {
+    // 1. Bersihkan spasi dan hapus ekor .mp4/.map4 gess
     id = id.trim().replace(/\.(mp4|map4)$/i, "");
+
+    // 2. 🎯 FITUR BARU: Potong topeng acak 3 karakter setelah tanda hubung (-)
+    // Misal: "bpC23SoN1-x72" otomatis dipotong murni menjadi "bpC23SoN1" gess!
+    if (id.includes('-')) {
+      id = id.split('-')[0];
+    }
   }
 
   useEffect(() => {
