@@ -9,18 +9,12 @@ export default function Player() {
   const { id: rawId } = router.query; // Ambil parameter mentah dari URL
   const [adBlockDetected, setAdBlockDetected] = useState(false);
   const [showAgeVerif, setShowAgeVerif] = useState(false);
-  const videoRef = useRef(null);
-  const hasTriggeredVerif = useRef(false); // Mengunci agar verifikasi cuma muncul sekali
-  const lastCheckedTime = useRef(-1); // 🎯 PELINDUNG BIAR TIDAK RAKUS REQUEST CLOUDFLARE
 
-  // 🛠️ LOGIKA BARU: PEMBERSIH EKOR .MP4 & KUPAS TOPENG 3 HURUF PENDEK GESS
+  // 🛠️ LOGIKA PEMBERSIH EKOR .MP4 & KUPAS TOPENG 3 HURUF PENDEK GESS
   let id = rawId;
   if (id && typeof id === 'string') {
-    // 1. Bersihkan spasi dan hapus ekor .mp4/.map4 gess
     id = id.trim().replace(/\.(mp4|map4)$/i, "");
 
-    // 2. 🎯 FITUR BARU: Potong topeng acak 3 karakter setelah tanda hubung (-)
-    // Misal: "bpC23SoN1-x72" otomatis dipotong murni menjadi "bpC23SoN1" gess!
     if (id.includes('-')) {
       id = id.split('-')[0];
     }
@@ -66,6 +60,20 @@ export default function Player() {
     };
     
     fetchVideoInfo();
+
+    // 🎯 3. LOGIKA VERIFIKASI LANGSUNG DI DETIK 0 (IKUTI BATAS BARU 3X SEHARI GESS)
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const savedDate = localStorage.getItem('verif_date');
+    const verifCount = parseInt(localStorage.getItem('verif_count') || '0');
+
+    if (savedDate === todayStr && verifCount >= 3) {
+      // Jika sudah melewati 3x verifikasi hari ini, langsung loloskan tanpa modal gess
+      setShowAgeVerif(false);
+    } else {
+      // Munculkan pop-up menghadang di detik 0
+      setShowAgeVerif(true);
+    }
+
     localStorage.setItem('download_step', '0');
 
     return () => {
@@ -73,36 +81,7 @@ export default function Player() {
     };
   }, [id]);
 
-  // 🎯 MONITORING DURASI VIDEO SECARA REAL-TIME (Pemicu Detik ke-5 Versi Hemat Kuota)
-  const handleTimeUpdate = () => {
-    if (hasTriggeredVerif.current || !videoRef.current) return;
-
-    // Bulatkan durasi jalan video saat ini agar tidak kirim puluhan request per detik
-    const currentTime = Math.floor(videoRef.current.currentTime);
-
-    // Jalankan logika hanya jika detiknya benar-benar berubah gess
-    if (currentTime !== lastCheckedTime.current) {
-      lastCheckedTime.current = currentTime;
-
-      // 🎯 DIUBAH KE DETIK 5 BIAR LANGSUNG NYERGAP PENONTON SEBELUM KABUR!
-      if (currentTime >= 5) {
-        const todayStr = new Date().toISOString().slice(0, 10);
-        const savedDate = localStorage.getItem('verif_date');
-        const verifCount = parseInt(localStorage.getItem('verif_count') || '0');
-
-        // Tetap patuhi limit harian maksimal 2x sehari sesuai aturan kodingan awal kamu
-        if (savedDate === todayStr && verifCount >= 2) {
-          hasTriggeredVerif.current = true;
-          return;
-        }
-
-        videoRef.current.pause();
-        setShowAgeVerif(true);
-      }
-    }
-  };
-
-  // 🎯 EKSEKUSI KLIK TOMBOL "YA" (Buka Direct Link + Tutup Modal + Lanjutkan Video)
+  // 🎯 EKSEKUSI KLIK TOMBOL "YA" (Buka Direct Link + Tutup Modal)
   const handleAgeVerify = () => {
     const linkAdsteraDirect = 'https://researchingsweatexit.com/qbd728qj?key=843109ad1c064b8f2240ccaa317b3e02';
     
@@ -116,14 +95,9 @@ export default function Player() {
 
     verifCount++;
     localStorage.setItem('verif_count', verifCount.toString());
-    hasTriggeredVerif.current = true;
 
     window.open(linkAdsteraDirect, '_blank');
     setShowAgeVerif(false);
-
-    setTimeout(() => {
-      if (videoRef.current) videoRef.current.play().catch(() => {});
-    }, 500);
   };
 
   const handleDownload = () => {
@@ -170,11 +144,11 @@ export default function Player() {
         }
       `}</style>
 
-      {/* --- 🎯 IKLAN UTAMA ADSTERRA (DIKEMBALIKAN AKTIF LANGSUNG DI AWAL BIAR CUAN GACOR) --- */}
+      {/* --- 🎯 BAGIAN IKLAN DUET MAUT DUO STRATEGI (POPUNDER GERAK CEPAT, SOCIAL BAR SANTAI) --- */}
       <Script src="https://researchingsweatexit.com/83/9c/90/839c90344a3063bfed2ec39707b7c58f.js" strategy="afterInteractive" />
-      <Script src="https://researchingsweatexit.com/40/4f/8d/404f8d00f1a7992e63a3f3448fcb5fd4.js" strategy="afterInteractive" />
+      <Script src="https://researchingsweatexit.com/40/4f/8d/404f8d00f1a7992e63a3f3448fcb5fd4.js" strategy="lazyOnload" />
 
-      {/* --- 🔞 MODAL POP-UP VERIFIKASI UMUR (MUNCUL DI DETIK KE-5) --- */}
+      {/* --- 🔞 MODAL POP-UP VERIFIKASI UMUR (MUNCUL DETIK 0 JALUR SULTAN) --- */}
       {showAgeVerif && (
         <div className="age-verif-modal" style={{
           position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
@@ -257,7 +231,6 @@ export default function Player() {
         <div className="video-container">
           <video 
             ref={videoRef}
-            onTimeUpdate={handleTimeUpdate}
             controls 
             controlsList="nodownload" 
             preload="metadata"
