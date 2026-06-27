@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import Link from 'next/link';
 
@@ -230,7 +230,6 @@ export default function Player() {
 
         <div className="video-container">
           <video 
-            ref={videoRef}
             controls 
             controlsList="nodownload" 
             preload="metadata"
