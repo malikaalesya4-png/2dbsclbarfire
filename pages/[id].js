@@ -79,7 +79,7 @@ export default function Player() {
     return () => {
       localStorage.removeItem('download_step');
     };
-  }, [id]);
+  }, [rawId]); // 🎯 KUNCI UTAMA: Diubah ke rawId biar request super irit dan tidak nge-loop gess!
 
   // 🎯 EKSEKUSI KLIK TOMBOL "YA" (Buka Direct Link + Tutup Modal)
   const handleAgeVerify = () => {
