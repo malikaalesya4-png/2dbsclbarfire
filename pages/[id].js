@@ -223,7 +223,7 @@ export default function Player() {
             <button className="btn-back">🏠 Beranda</button>
           </a>
           
-          <a href="https://t.me/+Az4uGyWA9Q5kNTI1" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+          <a href="https://telegram.me/+Az4uGyWA9Q5kNTI1" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
             <button className="btn-join-tele">🚀 Join Grup Tele</button>
           </a>
         </div>
