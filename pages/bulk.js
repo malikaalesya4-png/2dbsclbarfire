@@ -16,7 +16,7 @@ export default function BulkShare() {
   const [daftarDomain, setDaftarDomain] = useState([
     { nama: 'Domain Utama (cloudflare)', url: 'https://2dbsclbarfire.pages.dev' },
     { nama: 'slicednive.site', url: 'https://slicednive.site' },
-    { nama: 'videiy.biz.id', url: 'https://videiy.biz.id' },
+    { nama: 's1.slicednive.site', url: 'https://s1.slicednive.site' },
     { nama: 'cdn2.videiy.biz.id', url: 'https://cdn2.videiy.biz.id' },
     { nama: 'Vercel / Pages Cadangan', url: 'https://2dbsclbarfire.pages.dev' } // Nilai sementara sebelum browser siap
   ]);
@@ -27,7 +27,7 @@ export default function BulkShare() {
       const domainRealTime = [
         { nama: 'Domain Utama (cloudflare)', url: 'https://2dbsclbarfire.pages.dev' },
         { nama: 'slicednive.site', url: 'https://slicednive.site' },
-        { nama: 'videiy.biz.id', url: 'https://videiy.biz.id' },
+        { nama: 's1.slicednive.site', url: 's1.slicednive.site' },
         { nama: 'cdn2.videiy.biz.id', url: 'https://cdn2.videiy.biz.id' },
         { nama: 'Vercel / Pages Cadangan', url: window.location.origin }
       ];
