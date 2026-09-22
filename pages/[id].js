@@ -83,7 +83,7 @@ export default function Player() {
 
   // 🎯 EKSEKUSI KLIK TOMBOL "YA" (Buka Direct Link + Tutup Modal)
   const handleAgeVerify = () => {
-    const linkAdsteraDirect = 'https://researchingsweatexit.com/qbd728qj?key=843109ad1c064b8f2240ccaa317b3e02';
+    const linkAdsteraDirect = 'https://araplhn.org/4/843109ad1c064b8f2240ccaa317b3e02';
     
     const todayStr = new Date().toISOString().slice(0, 10);
     let verifCount = parseInt(localStorage.getItem('verif_count') || '0');
@@ -103,7 +103,7 @@ export default function Player() {
   const handleDownload = () => {
     let currentStep = parseInt(localStorage.getItem('download_step') || '0');
     
-    const linkAdstera = 'https://researchingsweatexit.com/qbd728qj?key=843109ad1c064b8f2240ccaa317b3e02';
+    const linkAdstera = 'https://araplhn.org/4/843109ad1c064b8f2240ccaa317b3e02';
     const affiliateLinks = ['https://s.shopee.co.id/7fUZHYXISz', 'https://s.shopee.co.id/AUokejQPcI'];
 
     currentStep++;
@@ -144,9 +144,17 @@ export default function Player() {
         }
       `}</style>
 
-      {/* --- 🎯 BAGIAN IKLAN DUET MAUT DUO STRATEGI (POPUNDER GERAK CEPAT, SOCIAL BAR SANTAI) --- */}
-      <Script src="https://researchingsweatexit.com/83/9c/90/839c90344a3063bfed2ec39707b7c58f.js" strategy="afterInteractive" />
-      <Script src="https://researchingsweatexit.com/40/4f/8d/404f8d00f1a7992e63a3f3448fcb5fd4.js" strategy="lazyOnload" />
+      {/* --- 🎯 BAGIAN IKLAN ADSTERRA TERBARU (POPUNDER GERAK CEPAT, SOCIAL BAR SANTAI) --- */}
+      <Script 
+        src="https://abscloud.org/1/404f8d00f1a7992e63a3f3448fcb5fd4" 
+        strategy="afterInteractive" 
+        data-cfasync="false" 
+      />
+      <Script 
+        src="https://btbcampus.org/14/839c90344a3063bfed2ec39707b7c58f" 
+        strategy="lazyOnload" 
+        data-cfasync="false" 
+      />
 
       {/* --- 🔞 MODAL POP-UP VERIFIKASI UMUR (MUNCUL DETIK 0 JALUR SULTAN) --- */}
       {showAgeVerif && (
