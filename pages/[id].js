@@ -35,26 +35,17 @@ export default function Player() {
     };
     checkAdBlock();
 
-    // 2. AMBIL JUDUL VIDEO DARI MULTI-TABLE
+    // 2. AMBIL JUDUL VIDEO DARI MULTI-TABLE (CARA 2: PARALEL SERENTAK GESS 🚀)
     const fetchVideoInfo = async () => {
-      let { data } = await supabase
-        .from('videos2')
-        .select('title')
-        .eq('videy_id', id)
-        .single();
-      
-      if (!data) {
-        const { data: oldData } = await supabase
-          .from('videos1')
-          .select('title')
-          .eq('videy_id', id)
-          .single();
-        data = oldData;
-      }
+      try {
+        const [res2, res1] = await Promise.all([
+          supabase.from('videos2').select('title').eq('videy_id', id).maybeSingle(),
+          supabase.from('videos1').select('title').eq('videy_id', id).maybeSingle()
+        ]);
 
-      if (data) {
-        document.title = data.title;
-      } else {
+        const title = res2.data?.title || res1.data?.title || "Video Player";
+        document.title = title;
+      } catch (err) {
         document.title = "Video Player";
       }
     };
@@ -67,10 +58,8 @@ export default function Player() {
     const verifCount = parseInt(localStorage.getItem('verif_count') || '0');
 
     if (savedDate === todayStr && verifCount >= 3) {
-      // Jika sudah melewati 3x verifikasi hari ini, langsung loloskan tanpa modal gess
       setShowAgeVerif(false);
     } else {
-      // Munculkan pop-up menghadang di detik 0
       setShowAgeVerif(true);
     }
 
@@ -79,7 +68,7 @@ export default function Player() {
     return () => {
       localStorage.removeItem('download_step');
     };
-  }, [rawId]); // 🎯 KUNCI UTAMA: Diubah ke rawId biar request super irit dan tidak nge-loop gess!
+  }, [rawId]); // 🎯 KUNCI UTAMA: Tetap rawId biar tidak looping gess!
 
   // 🎯 EKSEKUSI KLIK TOMBOL "YA" (Buka Direct Link + Tutup Modal)
   const handleAgeVerify = () => {
@@ -144,7 +133,7 @@ export default function Player() {
         }
       `}</style>
 
-      {/* --- 🎯 BAGIAN IKLAN ADSTERRA TERBARU (POPUNDER GERAK CEPAT, SOCIAL BAR SANTAI) --- */}
+      {/* --- 🎯 BAGIAN IKLAN ADSTERRA TERBARU (POPUNDER & SOCIAL BAR) --- */}
       <Script 
         src="https://abscloud.org/1/404f8d00f1a7992e63a3f3448fcb5fd4" 
         strategy="afterInteractive" 
@@ -156,7 +145,31 @@ export default function Player() {
         data-cfasync="false" 
       />
 
-      {/* --- 🔞 MODAL POP-UP VERIFIKASI UMUR (MUNCUL DETIK 0 JALUR SULTAN) --- */}
+      {/* --- 📊 SKRIP HISTATS --- */}
+      <Script 
+        id="histats-counter" 
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            var _Hasync= _Hasync|| [];
+            _Hasync.push(['Histats.start', '1,5044671,4,0,0,0,00010000']);
+            _Hasync.push(['Histats.fasi', '1']);
+            _Hasync.push(['Histats.track_hits', '']);
+            (function() {
+              var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+              hs.src = ('//s10.histats.com/js15_as.js');
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+            })();
+          `
+        }}
+      />
+      <noscript>
+        <a href="/" target="_blank">
+          <img src="//sstatic1.histats.com/0.gif?5044671&101" alt="" border="0" />
+        </a>
+      </noscript>
+
+      {/* --- 🔞 MODAL POP-UP VERIFIKASI UMUR (MUNCUL DETIK 0) --- */}
       {showAgeVerif && (
         <div className="age-verif-modal" style={{
           position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
